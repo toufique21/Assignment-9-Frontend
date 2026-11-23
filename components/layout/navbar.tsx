@@ -18,10 +18,8 @@ import { ButtonLink } from "@/components/ui/button"
 import { useToast } from "@/components/ui/toast"
 import { authClient } from "@/lib/auth-client"
 import { publicLinks } from "@/lib/navigation"
+import { getRole } from "@/lib/roles"
 import { cn } from "@/lib/utils"
-
-const roles = ["student", "tutor", "admin"] as const
-type Role = (typeof roles)[number]
 
 type NavUser = {
     name?: string | null
@@ -32,14 +30,10 @@ type NavUser = {
 
 type SessionState = ReturnType<typeof authClient.useSession>
 
-const roleStyles: Record<Role, string> = {
+const roleStyles = {
     student: "bg-[#ff9500]/15 text-[#a25d00] dark:text-[#ffb340]",
     tutor: "bg-[#34c759]/15 text-[#248a3d] dark:text-[#75e28b]",
     admin: "bg-[#5e5ce6]/15 text-[#4b49c7] dark:text-[#a7a5ff]",
-}
-
-function getRole(role?: string | null): Role {
-    return roles.find((item) => item === role) ?? "student"
 }
 
 function displayName(user: NavUser) {
