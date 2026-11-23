@@ -7,6 +7,7 @@ import {
     PanelLeftClose,
     PanelLeftOpen,
     PlusCircle,
+    ReceiptText,
     Users,
     X,
 } from "lucide-react"
@@ -16,9 +17,11 @@ import { useState } from "react"
 import type { ReactNode } from "react"
 
 import { Button } from "@/components/ui/button"
+import { authClient } from "@/lib/auth-client"
+import { getRole } from "@/lib/roles"
 import { cn } from "@/lib/utils"
 
-const links = [
+const tutorLinks = [
     {
         href: "/dashboard/tutor",
         label: "Overview",
@@ -41,11 +44,59 @@ const links = [
     },
 ]
 
+const adminLinks = [
+    {
+        href: "/dashboard/admin",
+        label: "Overview",
+        icon: LayoutDashboard,
+    },
+    {
+        href: "/dashboard/admin/users",
+        label: "Users",
+        icon: Users,
+    },
+    {
+        href: "/dashboard/admin/tuitions",
+        label: "Tuitions",
+        icon: ClipboardList,
+    },
+    {
+        href: "/dashboard/admin/transactions",
+        label: "Transactions",
+        icon: ReceiptText,
+    },
+]
+
+const studentLinks = [
+    {
+        href: "/dashboard/student",
+        label: "Overview",
+        icon: LayoutDashboard,
+    },
+]
+
 export function DashboardShell({ children }: { children: ReactNode }) {
     const pathname = usePathname()
     const [collapsed, setCollapsed] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
-    const current = links.find((link) => link.href === pathname) ?? links[0]
+    const session = authClient.useSession()
+    const role = getRole(
+        (session.data?.user as { role?: string | null } | undefined)?.role
+    )
+    const roleLabel = role.charAt(0).toUpperCase() + role.slice(1)
+    const links =
+        role === "admin"
+            ? adminLinks
+            : role === "tutor"
+              ? tutorLinks
+              : studentLinks
+    const current =
+        links.find((link) => link.href === pathname) ??
+        links[0] ?? {
+            href: pathname,
+            label: "Dashboard",
+            icon: LayoutDashboard,
+        }
 
     return (
         <div className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
@@ -73,7 +124,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                                 collapsed && "lg:hidden"
                             )}
                         >
-                            Tutor menu
+                            {roleLabel} menu
                         </p>
                         <Button
                             type="button"
@@ -157,7 +208,7 @@ export function DashboardShell({ children }: { children: ReactNode }) {
                                 {current.label}
                             </h1>
                             <p className="hidden text-xs text-muted-foreground sm:block">
-                                Tutor dashboard
+                                {roleLabel} dashboard
                             </p>
                         </div>
                     </div>

@@ -4,7 +4,7 @@ import { mongodbAdapter } from "@better-auth/mongo-adapter";
 
 const mongoUri = process.env.MONGODB_URI || "mongodb://localhost:27017/database";
 const client = new MongoClient(mongoUri);
-const db = client.db("mentorLagbe");
+export const db = client.db("mentorLagbe");
 
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;

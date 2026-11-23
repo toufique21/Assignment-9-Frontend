@@ -4,11 +4,15 @@ export async function apiFetch<T>(
     path: string,
     init?: RequestInit
 ): Promise<T> {
-    if (!baseUrl) {
+    const isLocalRoute = path.startsWith("/api/")
+
+    if (!isLocalRoute && !baseUrl) {
         throw new Error("NEXT_PUBLIC_API_URL is not configured.")
     }
 
-    const response = await fetch(`${baseUrl}${path}`, {
+    const url = isLocalRoute ? path : `${baseUrl}${path}`
+
+    const response = await fetch(url, {
         ...init,
         headers: {
             "Content-Type": "application/json",

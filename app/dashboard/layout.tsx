@@ -1,7 +1,7 @@
 "use client"
 
 import { ShieldAlert } from "lucide-react"
-import { useRouter } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import { useEffect } from "react"
 import type { ReactNode } from "react"
 
@@ -9,7 +9,7 @@ import { DashboardShell } from "@/components/dashboard/dashboard-shell"
 import { ButtonLink } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { authClient } from "@/lib/auth-client"
-import { getRole } from "@/lib/roles"
+import { getRole, type UserRole } from "@/lib/roles"
 
 export default function DashboardLayout({
     children,
@@ -18,9 +18,17 @@ export default function DashboardLayout({
 }) {
     const session = authClient.useSession()
     const router = useRouter()
+    const pathname = usePathname()
     const user = session.data?.user as { role?: string | null } | undefined
     const isSignedIn = Boolean(user)
     const role = getRole(user?.role)
+
+    const section = pathname.split("/")[2]
+    const requiredRole: UserRole | null =
+        section === "admin" || section === "tutor" || section === "student"
+            ? section
+            : null
+    const allowed = requiredRole === null || role === requiredRole
 
     useEffect(() => {
         if (!session.isPending && !isSignedIn) {
@@ -42,7 +50,11 @@ export default function DashboardLayout({
         )
     }
 
-    if (role !== "tutor") {
+    if (!allowed) {
+        const label = requiredRole
+            ? requiredRole.charAt(0).toUpperCase() + requiredRole.slice(1)
+            : "Authorized"
+
         return (
             <div className="mx-auto flex w-full max-w-md px-4 py-20">
                 <div className="glass-surface w-full space-y-4 rounded-3xl p-8 text-center">
@@ -50,11 +62,11 @@ export default function DashboardLayout({
                         <ShieldAlert className="size-5" />
                     </span>
                     <h1 className="font-heading text-xl font-semibold">
-                        Tutors only
+                        {label}s only
                     </h1>
                     <p className="text-sm text-muted-foreground">
-                        This area is for tutor accounts. Switch to a tutor account
-                        or return to the homepage.
+                        This area is for {label.toLowerCase()} accounts. Switch
+                        to the right account or return to the homepage.
                     </p>
                     <ButtonLink href="/" className="w-full">
                         Back to homepage
