@@ -195,7 +195,7 @@ export default function AdminTuitionsPage() {
                                     </Button>
                                     <Button
                                         type="button"
-                                        variant="secondary"
+                                        variant="destructive"
                                         size="sm"
                                         disabled={isBusy || tuition.approvalStatus === "rejected"}
                                         onClick={() => handleApproval(tuition.id, "rejected")}

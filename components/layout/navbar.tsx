@@ -41,7 +41,7 @@ const roleStyles = {
 const planStyles = {
     free: "bg-[var(--glass-tint-soft)] text-muted-foreground",
     premium:
-        "bg-[#ff2d78]/15 text-[#c2185b] ring-1 ring-[#ff2d78]/30 dark:text-[#ff85b3]",
+        "bg-[#7c3aed]/12 text-[#6d28d9] ring-1 ring-[#7c3aed]/25 dark:text-[#c4b5fd]",
 }
 
 function displayName(user: NavUser) {

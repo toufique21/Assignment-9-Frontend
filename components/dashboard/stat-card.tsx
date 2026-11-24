@@ -1,4 +1,5 @@
 import type { LucideIcon } from "lucide-react"
+import type { ReactNode } from "react"
 
 import { cn } from "@/lib/utils"
 
@@ -7,12 +8,16 @@ export function StatCard({
     value,
     hint,
     icon: Icon,
+    valueIcon,
+    valueClassName,
     className,
 }: {
     label: string
     value: string | number
     hint?: string
     icon: LucideIcon
+    valueIcon?: ReactNode
+    valueClassName?: string
     className?: string
 }) {
     return (
@@ -23,8 +28,14 @@ export function StatCard({
                     <Icon className="size-4" />
                 </span>
             </div>
-            <p className="font-heading mt-4 text-3xl font-semibold tabular-nums">
-                {value}
+            <p
+                className={cn(
+                    "font-heading mt-4 flex items-center gap-2 text-3xl font-semibold tabular-nums",
+                    valueClassName
+                )}
+            >
+                {valueIcon}
+                <span>{value}</span>
             </p>
             {hint ? (
                 <p className="mt-1 text-xs text-muted-foreground">{hint}</p>

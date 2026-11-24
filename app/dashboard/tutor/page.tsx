@@ -3,6 +3,7 @@
 import {
     CheckCircle2,
     ClipboardList,
+    Crown,
     PlusCircle,
     Sparkles,
     Users,
@@ -12,6 +13,7 @@ import { ErrorState } from "@/components/dashboard/error-state"
 import { StatCard } from "@/components/dashboard/stat-card"
 import { StatusBadge } from "@/components/dashboard/status-badge"
 import { ButtonLink } from "@/components/ui/button"
+import { PremiumCrown } from "@/components/ui/premium-crown"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useTutorWorkspace } from "@/hooks/use-tutor-workspace"
 import { canPostTuition } from "@/lib/tutor-data"
@@ -73,7 +75,15 @@ export default function TutorOverviewPage() {
                             ? "Unlimited posts"
                             : "Up to 2 tuition posts"
                     }
-                    icon={Sparkles}
+                    icon={workspace.plan === "pro" ? Crown : Sparkles}
+                    valueIcon={
+                        workspace.plan === "pro" ? <PremiumCrown /> : undefined
+                    }
+                    valueClassName={
+                        workspace.plan === "pro"
+                            ? "text-[#7c3aed] dark:text-[#a78bfa]"
+                            : undefined
+                    }
                 />
             </div>
 
@@ -122,7 +132,16 @@ export default function TutorOverviewPage() {
                         className="h-auto min-h-24 flex-col items-start gap-1 rounded-2xl px-4 py-4 text-left"
                     >
                         <Sparkles className="size-5 text-primary" />
-                        <span>{workspace.plan === "pro" ? "Pro active" : "Upgrade to Pro"}</span>
+                        <span
+                            className={
+                                workspace.plan === "pro"
+                                    ? "flex items-center gap-1.5 text-[#7c3aed] dark:text-[#a78bfa]"
+                                    : undefined
+                            }
+                        >
+                            {workspace.plan === "pro" ? <PremiumCrown /> : null}
+                            {workspace.plan === "pro" ? "Pro active" : "Upgrade to Pro"}
+                        </span>
                         <span className="text-xs font-normal text-muted-foreground">
                             {workspace.plan === "pro"
                                 ? "Unlimited tuition posts"

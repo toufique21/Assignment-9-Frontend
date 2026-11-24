@@ -164,11 +164,7 @@ export default function ApplicantsPage() {
                                 <Button
                                     type="button"
                                     size="sm"
-                                    variant={
-                                        application.status === "rejected"
-                                            ? "destructive"
-                                            : "secondary"
-                                    }
+                                    variant="destructive"
                                     onClick={() =>
                                         changeStatus(application.id, "rejected")
                                     }

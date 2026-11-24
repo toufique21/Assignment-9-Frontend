@@ -2,7 +2,7 @@
 
 import { CheckCircle2, Loader2, XCircle } from "lucide-react"
 import { useRouter, useSearchParams } from "next/navigation"
-import { use, useMemo } from "react"
+import { useEffect, useState } from "react"
 
 import { ButtonLink } from "@/components/ui/button"
 import { Container } from "@/components/ui/container"
@@ -54,9 +54,29 @@ export function PaymentSuccess() {
     const user = session.data?.user as { role?: string | null } | undefined
     const role = getRole(user?.role)
     const sessionId = params.get("session_id") ?? ""
-    const result = use(
-        useMemo(() => confirmPayment(sessionId, router), [sessionId, router])
-    )
+    const [result, setResult] = useState<ConfirmResult | null>(null)
+
+    useEffect(() => {
+        let cancelled = false
+
+        confirmPayment(sessionId, router)
+            .then((confirmation) => {
+                if (!cancelled) setResult(confirmation)
+            })
+            .catch((error) => {
+                if (!cancelled) {
+                    setResult({ ok: false, message: getErrorMessage(error) })
+                }
+            })
+
+        return () => {
+            cancelled = true
+        }
+    }, [sessionId, router])
+
+    if (!result) {
+        return <PaymentSuccessFallback />
+    }
 
     if (!result.ok) {
         return (
