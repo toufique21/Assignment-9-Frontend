@@ -9,6 +9,7 @@ import {
     RoleSelector,
     type SignUpRole,
 } from "@/components/auth/role-selector"
+import { AvatarUpload } from "@/components/ui/avatar-upload"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/toast"
 import { authClient } from "@/lib/auth-client"
@@ -20,6 +21,8 @@ export function SignUpForm() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [role, setRole] = useState<SignUpRole>("student")
+    const [image, setImage] = useState("")
+    const [uploadingImage, setUploadingImage] = useState(false)
     const [loading, setLoading] = useState(false)
     const [googleLoading, setGoogleLoading] = useState(false)
 
@@ -49,6 +52,7 @@ export function SignUpForm() {
                 email: email.trim(),
                 password,
                 role,
+                ...(image ? { image } : {}),
                 callbackURL: "/",
             }
 
@@ -94,6 +98,15 @@ export function SignUpForm() {
     return (
         <div className="space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
+                <div className="glass-surface rounded-3xl px-4 py-5">
+                    <AvatarUpload
+                        value={image}
+                        onChange={setImage}
+                        name={name || "New Member"}
+                        size="lg"
+                        onUploadingChange={setUploadingImage}
+                    />
+                </div>
                 <AuthField
                     id="sign-up-name"
                     label="Full Name"
@@ -125,8 +138,16 @@ export function SignUpForm() {
                     required
                 />
                 <RoleSelector value={role} onChange={setRole} />
-                <Button type="submit" disabled={loading} className="w-full">
-                    {loading ? "Creating account..." : "Create Account"}
+                <Button
+                    type="submit"
+                    disabled={loading || uploadingImage}
+                    className="w-full"
+                >
+                    {uploadingImage
+                        ? "Uploading photo..."
+                        : loading
+                          ? "Creating account..."
+                          : "Create Account"}
                 </Button>
             </form>
 

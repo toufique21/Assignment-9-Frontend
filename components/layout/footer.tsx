@@ -112,7 +112,7 @@ export function Footer() {
                         <ul className="space-y-3 text-sm text-muted-foreground">
                             <li className="flex items-center gap-2">
                                 <Mail className="size-4 shrink-0" />
-                                hello@mentorlagbe.com
+                                mentor@lagbe.com
                             </li>
                             <li className="flex items-center gap-2">
                                 <Phone className="size-4 shrink-0" />

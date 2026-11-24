@@ -23,6 +23,7 @@ export type Application = {
     subject: string
     monthlyFee: number
     tutorEmail: string
+    tutorName?: string
     studentName: string
     studentEmail: string
     studentPhone: string

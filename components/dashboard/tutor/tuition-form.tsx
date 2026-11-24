@@ -1,7 +1,8 @@
 "use client"
 
-import { ImagePlus } from "lucide-react"
-import { useState } from "react"
+import { Link2, Upload, X } from "lucide-react"
+import Image from "next/image"
+import { useEffect, useRef, useState } from "react"
 
 import { AuthField } from "@/components/auth/auth-field"
 import { Button, ButtonLink } from "@/components/ui/button"
@@ -44,6 +45,8 @@ type FormState = {
     description: string
 }
 
+type ImageMode = "url" | "file"
+
 function toFormState(initial?: Tuition): FormState {
     return {
         title: initial?.title ?? "",
@@ -68,12 +71,63 @@ export function TuitionForm({
 }) {
     const { notify } = useToast()
     const [form, setForm] = useState<FormState>(() => toFormState(initial))
+    const [imageMode, setImageMode] = useState<ImageMode>("url")
     const [imageUrl, setImageUrl] = useState(initial?.bannerImage ?? "")
     const [file, setFile] = useState<File | null>(null)
+    const [filePreview, setFilePreview] = useState("")
     const [uploading, setUploading] = useState(false)
+    const previewRef = useRef<string | null>(null)
+
+    useEffect(() => {
+        return () => {
+            if (previewRef.current) {
+                URL.revokeObjectURL(previewRef.current)
+            }
+        }
+    }, [])
 
     function update<K extends keyof FormState>(key: K, value: FormState[K]) {
         setForm((current) => ({ ...current, [key]: value }))
+    }
+
+    function clearFile() {
+        if (previewRef.current) {
+            URL.revokeObjectURL(previewRef.current)
+            previewRef.current = null
+        }
+        setFile(null)
+        setFilePreview("")
+    }
+
+    function switchImageMode(mode: ImageMode) {
+        if (mode === imageMode) return
+
+        if (mode === "url") {
+            clearFile()
+        } else {
+            setImageUrl("")
+        }
+
+        setImageMode(mode)
+    }
+
+    function handleFileChange(input: HTMLInputElement | null) {
+        const selected = input?.files?.[0]
+        clearFile()
+
+        if (input) input.value = ""
+
+        if (!selected) return
+
+        if (!selected.type.startsWith("image/")) {
+            notify("Please choose an image file.", "error")
+            return
+        }
+
+        const preview = URL.createObjectURL(selected)
+        previewRef.current = preview
+        setFilePreview(preview)
+        setFile(selected)
     }
 
     async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
@@ -103,9 +157,16 @@ export function TuitionForm({
             return
         }
 
-        let bannerImage = imageUrl.trim()
+        let bannerImage = ""
 
-        if (file) {
+        if (imageMode === "url") {
+            bannerImage = imageUrl.trim()
+        } else if (file) {
+            if (file.size > 32 * 1024 * 1024) {
+                notify("Image must be smaller than 32MB.", "error")
+                return
+            }
+
             setUploading(true)
             try {
                 bannerImage = await uploadImage(file)
@@ -139,6 +200,12 @@ export function TuitionForm({
             notify(getErrorMessage(error), "error")
         }
     }
+
+    const previewUrl = imageMode === "file" ? filePreview : imageUrl.trim()
+    const canPreview =
+        previewUrl.startsWith("https://") ||
+        previewUrl.startsWith("http://") ||
+        previewUrl.startsWith("blob:")
 
     return (
         <form onSubmit={handleSubmit} className="glass-surface rounded-3xl p-5 sm:p-7">
@@ -232,40 +299,103 @@ export function TuitionForm({
                     onChange={(event) => update("daysPerWeek", event.target.value)}
                 />
 
-                <div className="space-y-2">
-                    <label htmlFor="tuition-image" className="text-sm font-medium">
-                        Banner image
-                    </label>
-                    <div className="relative">
-                        <ImagePlus className="pointer-events-none absolute top-3.5 left-3.5 size-4 text-muted-foreground" />
-                        <AuthField
-                            id="tuition-image"
-                            label=""
-                            className="pl-10"
-                            placeholder="Paste an image URL"
-                            value={imageUrl}
-                            onChange={(event) => setImageUrl(event.target.value)}
-                        />
+                <div className="space-y-3 sm:col-span-2">
+                    <div className="flex flex-wrap items-center justify-between gap-3">
+                        <span className="text-sm font-medium">Banner image</span>
+                        <div className="glass-surface inline-flex rounded-2xl p-1">
+                            <button
+                                type="button"
+                                onClick={() => switchImageMode("url")}
+                                className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
+                                    imageMode === "url"
+                                        ? "bg-primary/15 text-primary"
+                                        : "text-muted-foreground hover:text-foreground"
+                                }`}
+                            >
+                                <Link2 className="size-3.5" />
+                                Paste URL
+                            </button>
+                            <button
+                                type="button"
+                                onClick={() => switchImageMode("file")}
+                                className={`inline-flex items-center gap-1.5 rounded-xl px-3 py-1.5 text-xs font-semibold transition ${
+                                    imageMode === "file"
+                                        ? "bg-primary/15 text-primary"
+                                        : "text-muted-foreground hover:text-foreground"
+                                }`}
+                            >
+                                <Upload className="size-3.5" />
+                                Upload file
+                            </button>
+                        </div>
                     </div>
-                </div>
 
-                <div className="space-y-2 sm:col-span-2">
-                    <label htmlFor="tuition-file" className="text-sm font-medium">
-                        Or upload an image
-                    </label>
-                    <input
-                        id="tuition-file"
-                        type="file"
-                        accept="image/*"
-                        onChange={(event) =>
-                            setFile(event.target.files?.[0] ?? null)
-                        }
-                        className="glass-surface h-11 w-full rounded-2xl px-4 py-2 text-sm outline-none file:mr-3 file:rounded-full file:bg-primary/15 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-primary focus-visible:ring-2 focus-visible:ring-primary/60"
-                    />
-                    <p className="text-xs text-muted-foreground">
-                        Files upload through ImgBB. Paste a URL if ImgBB is not
-                        configured.
-                    </p>
+                    {imageMode === "url" ? (
+                        <div className="relative">
+                            <Link2 className="pointer-events-none absolute top-3.5 left-3.5 size-4 text-muted-foreground" />
+                            <AuthField
+                                id="tuition-image"
+                                label=""
+                                className="pl-10"
+                                placeholder="Paste an image URL"
+                                value={imageUrl}
+                                onChange={(event) => setImageUrl(event.target.value)}
+                            />
+                        </div>
+                    ) : (
+                        <div className="space-y-2">
+                            <input
+                                id="tuition-file"
+                                type="file"
+                                accept="image/*"
+                                onChange={(event) =>
+                                    handleFileChange(event.currentTarget)
+                                }
+                                className="glass-surface h-11 w-full rounded-2xl px-4 py-2 text-sm outline-none file:mr-3 file:rounded-full file:bg-primary/15 file:px-3 file:py-1 file:text-xs file:font-semibold file:text-primary focus-visible:ring-2 focus-visible:ring-primary/60"
+                            />
+                            <p className="text-xs text-muted-foreground">
+                                Your image is uploaded through ImgBB when you submit.
+                            </p>
+                        </div>
+                    )}
+
+                    <div className="relative aspect-video overflow-hidden rounded-2xl border border-white/15 bg-[var(--glass-tint-soft)]">
+                        {canPreview ? (
+                            <>
+                                <Image
+                                    src={previewUrl}
+                                    alt="Banner image preview"
+                                    fill
+                                    unoptimized
+                                    sizes="(max-width: 640px) 100vw, 50vw"
+                                    className="object-cover"
+                                />
+                                <button
+                                    type="button"
+                                    aria-label="Remove selected image"
+                                    onClick={() => {
+                                        if (imageMode === "file") {
+                                            clearFile()
+                                        } else {
+                                            setImageUrl("")
+                                        }
+                                    }}
+                                    className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full border border-white/40 bg-black/35 text-white backdrop-blur-md transition hover:bg-black/55"
+                                >
+                                    <X className="size-4" />
+                                </button>
+                                <span className="absolute bottom-2 left-2 rounded-full border border-white/40 bg-black/30 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-md">
+                                    Preview
+                                </span>
+                            </>
+                        ) : (
+                            <div className="flex h-full items-center justify-center px-4 text-center text-sm text-muted-foreground">
+                                {imageMode === "file"
+                                    ? "Choose an image file to preview it here."
+                                    : "Paste an image URL to preview it here."}
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className="space-y-2 sm:col-span-2">

@@ -73,6 +73,11 @@ const studentLinks = [
         label: "Overview",
         icon: LayoutDashboard,
     },
+    {
+        href: "/dashboard/student/my-applications",
+        label: "My Applications",
+        icon: ClipboardList,
+    },
 ]
 
 export function DashboardShell({ children }: { children: ReactNode }) {
