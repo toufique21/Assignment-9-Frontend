@@ -24,11 +24,23 @@ export async function FeaturedTuitionsSection() {
                     </ButtonLink>
                 </div>
 
-                <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-                    {tuitions.map((tuition) => (
-                        <TuitionCard key={tuition.id} tuition={tuition} />
-                    ))}
-                </div>
+                {tuitions.length === 0 ? (
+                    <div className="glass-surface mt-10 rounded-3xl p-10 text-center">
+                        <h3 className="font-heading text-lg font-semibold">
+                            No approved tuitions yet
+                        </h3>
+                        <p className="mt-1 text-sm text-muted-foreground">
+                            Real tuitions will appear here once tutors publish
+                            them and admin approves them.
+                        </p>
+                    </div>
+                ) : (
+                    <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+                        {tuitions.map((tuition) => (
+                            <TuitionCard key={tuition.id} tuition={tuition} />
+                        ))}
+                    </div>
+                )}
             </Container>
         </section>
     )

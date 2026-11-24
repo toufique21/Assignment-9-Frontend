@@ -3,7 +3,7 @@ import type { ReactNode } from "react"
 import { cn } from "@/lib/utils"
 
 const statusStyles: Record<string, string> = {
-    pending: "bg-[#ff9500]/15 text-[#a25d00] dark:text-[#ffb340]",
+    pending: "bg-[#b86500]/15 text-[#8a4e00] dark:text-[#d98a2b]",
     approved: "bg-[#34c759]/15 text-[#248a3d] dark:text-[#75e28b]",
     paid: "bg-[#34c759]/15 text-[#248a3d] dark:text-[#75e28b]",
     accepted: "bg-[#34c759]/15 text-[#248a3d] dark:text-[#75e28b]",

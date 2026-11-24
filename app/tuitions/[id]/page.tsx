@@ -27,6 +27,12 @@ import { formatDate, formatMonthlyFee } from "@/lib/format"
 import { getRole } from "@/lib/roles"
 import type { TutorProfile, Tuition } from "@/lib/tuitions"
 import { usePublicTuitions } from "@/hooks/use-public-tuitions"
+import { useStudentWorkspace } from "@/hooks/use-student-workspace"
+import {
+    canApplyToTuition,
+    FREE_APPLICATION_LIMIT,
+    reloadWorkspace,
+} from "@/lib/student-data"
 
 const fieldClass =
     "h-10 w-full rounded-2xl border border-white/15 bg-white/60 px-3 text-sm outline-none transition focus:border-primary/50 focus:ring-2 focus:ring-primary/15 dark:bg-white/5"
@@ -40,6 +46,11 @@ export default function TuitionDetailPage() {
         | undefined
     const role = getRole(user?.role)
     const isStudent = Boolean(user) && role === "student"
+    const { workspace: studentWorkspace } = useStudentWorkspace()
+    const applicationLimitReached =
+        isStudent &&
+        studentWorkspace.email === user?.email &&
+        !canApplyToTuition(studentWorkspace)
 
     if (isPending || !isReady) {
         return (
@@ -105,7 +116,7 @@ export default function TuitionDetailPage() {
 
                 <div className="mt-5 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
                     <article className="glass-surface overflow-hidden rounded-3xl">
-                        <div className="relative aspect-video bg-gradient-to-br from-[#ff9500]/20 to-[#5e5ce6]/20">
+                        <div className="relative aspect-video bg-gradient-to-br from-[#b86500]/20 to-[#5e5ce6]/20">
                             {tuition.bannerImage ? (
                                 <Image
                                     src={tuition.bannerImage}
@@ -116,7 +127,7 @@ export default function TuitionDetailPage() {
                                     className="object-cover"
                                 />
                             ) : null}
-                            <span className="absolute top-4 left-4 rounded-full border border-white/40 bg-black/25 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
+                            <span className="absolute top-4 left-4 rounded-full border border-white/40 bg-black/25 backdrop-blur-md px-3 py-1 text-xs font-semibold text-white">
                                 {tuition.mode}
                             </span>
                         </div>
@@ -175,12 +186,32 @@ export default function TuitionDetailPage() {
                                 </p>
 
                                 {isStudent ? (
-                                    <ApplyForm
-                                        key={`${tuition.id}-${user?.email ?? ""}`}
-                                        tuition={tuition}
-                                        studentName={user?.name ?? ""}
-                                        studentEmail={user?.email ?? ""}
-                                    />
+                                    applicationLimitReached ? (
+                                        <div className="mt-6 rounded-2xl bg-[var(--glass-tint-soft)] p-5 text-center">
+                                            <p className="text-sm font-medium">
+                                                You have used all{" "}
+                                                {FREE_APPLICATION_LIMIT} free
+                                                applications.
+                                            </p>
+                                            <p className="mt-1 text-sm text-muted-foreground">
+                                                Upgrade to Premium to apply to
+                                                unlimited tuitions.
+                                            </p>
+                                            <ButtonLink
+                                                href="/pricing"
+                                                className="mt-4 w-full"
+                                            >
+                                                Upgrade to Premium
+                                            </ButtonLink>
+                                        </div>
+                                    ) : (
+                                        <ApplyForm
+                                            key={`${tuition.id}-${user?.email ?? ""}`}
+                                            tuition={tuition}
+                                            studentName={user?.name ?? ""}
+                                            studentEmail={user?.email ?? ""}
+                                        />
+                                    )
                                 ) : (
                                     <div className="mt-6 rounded-2xl bg-[var(--glass-tint-soft)] p-5 text-center">
                                         <p className="text-sm text-muted-foreground">
@@ -276,7 +307,7 @@ function TutorProfileCard({
             </div>
 
             <div className="mt-6 flex flex-col items-center text-center">
-                <div className="relative size-20 overflow-hidden rounded-full bg-gradient-to-br from-[#ff9500] to-[#5e5ce6] ring-2 ring-white/40">
+                <div className="relative size-20 overflow-hidden rounded-full bg-gradient-to-br from-[#b86500] to-[#5e5ce6] ring-2 ring-white/40">
                     {image ? (
                         <Image
                             src={image}
@@ -293,7 +324,7 @@ function TutorProfileCard({
                     )}
                 </div>
                 <h3 className="font-heading mt-3 text-lg font-semibold">{name}</h3>
-                <span className="mt-3 rounded-full bg-[#ff9500]/15 px-3 py-1 text-xs font-semibold text-[#a25d00] dark:text-[#ffb340]">
+                <span className="mt-3 rounded-full bg-[#b86500]/15 px-3 py-1 text-xs font-semibold text-[#8a4e00] dark:text-[#d98a2b]">
                     {profile?.role === "tutor" ? "Verified Tutor" : "Tutor"}
                 </span>
             </div>
@@ -379,6 +410,7 @@ function ApplyForm({
                 }),
             })
 
+            reloadWorkspace()
             notify("Application sent to the tutor.")
             router.push("/dashboard/student/my-applications")
         } catch (error) {

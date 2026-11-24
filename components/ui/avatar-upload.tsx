@@ -5,9 +5,11 @@ import Image from "next/image"
 import { useEffect, useId, useRef, useState } from "react"
 import type { ChangeEvent } from "react"
 
+import { PremiumCrown } from "@/components/ui/premium-crown"
 import { useToast } from "@/components/ui/toast"
 import { getErrorMessage } from "@/lib/api-client"
 import { uploadImage } from "@/lib/imgbb"
+import { cn } from "@/lib/utils"
 
 function initials(name: string) {
     const parts = name.trim().split(/\s+/).slice(0, 2)
@@ -22,6 +24,7 @@ export function AvatarUpload({
     name,
     size = "md",
     readOnly = false,
+    isPremium = false,
     onUploadingChange,
 }: {
     value: string
@@ -29,6 +32,7 @@ export function AvatarUpload({
     name: string
     size?: "md" | "lg"
     readOnly?: boolean
+    isPremium?: boolean
     onUploadingChange?: (uploading: boolean) => void
 }) {
     const inputId = useId()
@@ -97,27 +101,30 @@ export function AvatarUpload({
 
     return (
         <div className="flex flex-col items-center gap-3">
-            <div
-                className={`relative ${avatarClass} overflow-hidden rounded-full bg-gradient-to-br from-[#ff9500] to-[#5e5ce6] ring-2 ring-white/40`}
-            >
-                {displayUrl ? (
-                    <Image
-                        src={displayUrl}
-                        alt="Profile picture preview"
-                        fill
-                        unoptimized
-                        sizes="112px"
-                        className="object-cover"
-                    />
-                ) : (
-                    <span className="flex h-full w-full items-center justify-center text-xl font-semibold text-white">
-                        {initials(name)}
-                    </span>
-                )}
-                {uploading ? (
-                    <span className="absolute inset-0 flex items-center justify-center bg-black/45">
-                        <Loader2 className="size-6 animate-spin text-white" />
-                    </span>
+            <div className={cn("relative", avatarClass)}>
+                <div className="relative h-full w-full overflow-hidden rounded-full bg-gradient-to-br from-[#b86500] to-[#5e5ce6] ring-2 ring-white/40">
+                    {displayUrl ? (
+                        <Image
+                            src={displayUrl}
+                            alt="Profile picture preview"
+                            fill
+                            unoptimized
+                            sizes="112px"
+                            className="object-cover"
+                        />
+                    ) : (
+                        <span className="flex h-full w-full items-center justify-center text-xl font-semibold text-white">
+                            {initials(name)}
+                        </span>
+                    )}
+                    {uploading ? (
+                        <span className="absolute inset-0 flex items-center justify-center bg-black/45">
+                            <Loader2 className="size-6 animate-spin text-white" />
+                        </span>
+                    ) : null}
+                </div>
+                {isPremium ? (
+                    <PremiumCrown className="absolute -top-1 -right-1 size-6 [&_svg]:size-4" />
                 ) : null}
             </div>
 

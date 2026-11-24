@@ -1,5 +1,7 @@
 import { apiFetch, getErrorMessage } from "@/lib/api-client"
 
+export const FREE_APPLICATION_LIMIT = 5
+
 export type ApplicationStatus = "pending" | "accepted" | "rejected"
 
 export type StudentApplication = {
@@ -126,6 +128,13 @@ export function reloadWorkspace() {
     if (email) {
         void activateWorkspace(email, studentName, plan, true)
     }
+}
+
+export function canApplyToTuition(workspace: Workspace) {
+    return (
+        workspace.plan === "pro" ||
+        workspace.applications.length < FREE_APPLICATION_LIMIT
+    )
 }
 
 export async function cancelApplication(id: string) {

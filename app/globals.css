@@ -54,33 +54,33 @@
     --card-foreground: #1c1c1e;
     --popover: rgba(255, 255, 255, 0.86);
     --popover-foreground: #1c1c1e;
-    --primary: #ff9500;
+    --primary: #b86500;
     --primary-foreground: #1c1c1e;
     --secondary: rgba(255, 255, 255, 0.6);
     --secondary-foreground: #1c1c1e;
     --muted: rgba(118, 118, 128, 0.12);
     --muted-foreground: #6e6e73;
     --accent: rgba(0, 122, 255, 0.1);
-    --accent-foreground: #ff9500;
+    --accent-foreground: #8a4e00;
     --destructive: #ff3b30;
     --border: rgba(60, 60, 67, 0.12);
     --input: rgba(255, 255, 255, 0.7);
-    --ring: #ff9500;
-    --chart-1: #ff9500;
+    --ring: #b86500;
+    --chart-1: #b86500;
     --chart-2: #34c759;
-    --chart-3: #ff9500;
+    --chart-3: #c4780a;
     --chart-4: #5e5ce6;
     --chart-5: #ff2d55;
     --radius: 1rem;
 
     --sidebar: rgba(255, 255, 255, 0.66);
     --sidebar-foreground: #1c1c1e;
-    --sidebar-primary: #ff9500;
+    --sidebar-primary: #b86500;
     --sidebar-primary-foreground: #1c1c1e;
     --sidebar-accent: rgba(0, 122, 255, 0.1);
-    --sidebar-accent-foreground: #ff9500;
+    --sidebar-accent-foreground: #8a4e00;
     --sidebar-border: rgba(60, 60, 67, 0.1);
-    --sidebar-ring: #ff9500;
+    --sidebar-ring: #b86500;
 
     --glass-bg: rgba(255, 255, 255, 0.62);
     --glass-border: rgba(255, 255, 255, 0.78);
@@ -96,32 +96,32 @@
     --card-foreground: #f2f2f7;
     --popover: rgba(36, 36, 38, 0.88);
     --popover-foreground: #f2f2f7;
-    --primary: #ff9500;
+    --primary: #b86500;
     --primary-foreground: #1c1c1e;
     --secondary: rgba(255, 255, 255, 0.1);
     --secondary-foreground: #f2f2f7;
     --muted: rgba(255, 255, 255, 0.08);
     --muted-foreground: #98989d;
     --accent: rgba(10, 132, 255, 0.18);
-    --accent-foreground: #ff9500;
+    --accent-foreground: #d98a2b;
     --destructive: #ff453a;
     --border: rgba(255, 255, 255, 0.12);
     --input: rgba(255, 255, 255, 0.08);
-    --ring: #ff9500;
-    --chart-1: #ff9500;
+    --ring: #b86500;
+    --chart-1: #b86500;
     --chart-2: #30d158;
-    --chart-3: #ff9f0a;
+    --chart-3: #c4780a;
     --chart-4: #5e5ce6;
     --chart-5: #ff375f;
 
     --sidebar: rgba(20, 20, 22, 0.72);
     --sidebar-foreground: #f2f2f7;
-    --sidebar-primary: #ff9500;
+    --sidebar-primary: #b86500;
     --sidebar-primary-foreground: #1c1c1e;
     --sidebar-accent: rgba(10, 132, 255, 0.18);
-    --sidebar-accent-foreground: #ff9500;
+    --sidebar-accent-foreground: #d98a2b;
     --sidebar-border: rgba(255, 255, 255, 0.1);
-    --sidebar-ring: #ff9500;
+    --sidebar-ring: #b86500;
 
     --glass-bg: rgba(28, 28, 30, 0.6);
     --glass-border: rgba(255, 255, 255, 0.12);
@@ -220,7 +220,7 @@
     }
 
     .glass-primary {
-        --glass-tint: #ff9500;
+        --glass-tint: #b86500;
         color: #1c1c1e;
         border-color: rgba(255, 255, 255, 0.3);
     }

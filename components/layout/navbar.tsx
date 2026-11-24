@@ -15,6 +15,7 @@ import { useEffect, useRef, useState } from "react"
 
 import { Brand } from "@/components/layout/brand"
 import { ButtonLink } from "@/components/ui/button"
+import { PremiumCrown } from "@/components/ui/premium-crown"
 import { useToast } from "@/components/ui/toast"
 import { authClient } from "@/lib/auth-client"
 import { publicLinks } from "@/lib/navigation"
@@ -26,18 +27,29 @@ type NavUser = {
     email?: string | null
     image?: string | null
     role?: string | null
+    plan?: string | null
 }
 
 type SessionState = ReturnType<typeof authClient.useSession>
 
 const roleStyles = {
-    student: "bg-[#ff9500]/15 text-[#a25d00] dark:text-[#ffb340]",
+    student: "bg-[#b86500]/15 text-[#8a4e00] dark:text-[#d98a2b]",
     tutor: "bg-[#34c759]/15 text-[#248a3d] dark:text-[#75e28b]",
     admin: "bg-[#5e5ce6]/15 text-[#4b49c7] dark:text-[#a7a5ff]",
 }
 
+const planStyles = {
+    free: "bg-[var(--glass-tint-soft)] text-muted-foreground",
+    premium:
+        "bg-[#ff2d78]/15 text-[#c2185b] ring-1 ring-[#ff2d78]/30 dark:text-[#ff85b3]",
+}
+
 function displayName(user: NavUser) {
     return user.name?.trim() || user.email?.split("@")[0] || "Account"
+}
+
+function isPremium(user: NavUser) {
+    return user.plan === "pro"
 }
 
 function isActive(href: string, pathname: string) {
@@ -51,22 +63,25 @@ function Avatar({ user }: { user: NavUser }) {
     const hasImage =
         user.image && (user.image.startsWith("http") || user.image.startsWith("/"))
 
-    if (hasImage) {
-        return (
-            <Image
-                src={user.image as string}
-                alt=""
-                width={32}
-                height={32}
-                unoptimized
-                className="size-8 rounded-full object-cover ring-1 ring-white/40"
-            />
-        )
-    }
-
     return (
-        <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-[#ff9500] to-[#5e5ce6] text-xs font-semibold text-white ring-1 ring-white/40">
-            {initial}
+        <span className="relative inline-flex size-8 shrink-0">
+            {hasImage ? (
+                <Image
+                    src={user.image as string}
+                    alt=""
+                    width={32}
+                    height={32}
+                    unoptimized
+                    className="size-8 rounded-full object-cover ring-1 ring-white/40"
+                />
+            ) : (
+                <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-[#b86500] to-[#5e5ce6] text-xs font-semibold text-white ring-1 ring-white/40">
+                    {initial}
+                </span>
+            )}
+            {isPremium(user) ? (
+                <PremiumCrown className="absolute -top-1 -right-1" />
+            ) : null}
         </span>
     )
 }
@@ -115,6 +130,7 @@ function UserMenu({
             notify("Signed out successfully")
             setOpen(false)
             onNavigate?.()
+            router.replace("/")
             router.refresh()
         } catch {
             notify("Could not sign out. Please try again.", "error")
@@ -154,23 +170,35 @@ function UserMenu({
                     role="menu"
                     className="glass-surface absolute top-[calc(100%+0.75rem)] right-0 w-60 rounded-2xl p-2"
                 >
-                    <div className="px-3 py-2">
-                        <div className="flex items-center gap-2">
-                            <p className="min-w-0 truncate text-sm font-semibold">
-                                {displayName(user)}
+                    <div className="flex items-start justify-between gap-2 px-3 py-2">
+                        <div className="min-w-0">
+                            <div className="flex flex-wrap items-center gap-1.5">
+                                <p className="min-w-0 truncate text-sm font-semibold">
+                                    {displayName(user)}
+                                </p>
+                                <span
+                                    className={cn(
+                                        "shrink-0 rounded-full px-2 py-0.5 text-[0.65rem] font-semibold capitalize tracking-wide",
+                                        roleStyles[role]
+                                    )}
+                                >
+                                    {role}
+                                </span>
+                            </div>
+                            <p className="truncate text-xs text-muted-foreground">
+                                {user.email}
                             </p>
-                            <span
-                                className={cn(
-                                    "shrink-0 rounded-full px-2 py-0.5 text-[0.65rem] font-semibold capitalize tracking-wide",
-                                    roleStyles[role]
-                                )}
-                            >
-                                {role}
-                            </span>
                         </div>
-                        <p className="truncate text-xs text-muted-foreground">
-                            {user.email}
-                        </p>
+                        <span
+                            className={cn(
+                                "mt-0.5 shrink-0 rounded-full px-2 py-0.5 text-[0.65rem] font-semibold tracking-wide",
+                                isPremium(user)
+                                    ? planStyles.premium
+                                    : planStyles.free
+                            )}
+                        >
+                            {isPremium(user) ? "Premium" : "Free"}
+                        </span>
                     </div>
                     <div className="my-1 h-px bg-border" />
                     <Link

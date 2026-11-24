@@ -81,13 +81,13 @@ export default function AdminTransactionsPage() {
                 <StatCard
                     label="Tutor Revenue"
                     value={formatUsd(tutorRevenue)}
-                    hint="Pro Tutor plans"
+                    hint="One-time Tutor Premium"
                     icon={UserCheck}
                 />
                 <StatCard
                     label="Student Revenue"
                     value={formatUsd(studentRevenue)}
-                    hint="Pro Student plans"
+                    hint="One-time Student Premium"
                     icon={Users}
                 />
             </div>
@@ -99,7 +99,7 @@ export default function AdminTransactionsPage() {
                             Payment records
                         </h2>
                         <p className="mt-0.5 text-xs text-muted-foreground">
-                            Stripe subscription transactions
+                            Live Stripe Checkout Sessions
                         </p>
                     </div>
                     <div className="flex flex-col gap-2 sm:flex-row">

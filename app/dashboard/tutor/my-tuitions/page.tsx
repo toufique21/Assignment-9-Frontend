@@ -115,7 +115,7 @@ export default function MyTuitionsPage() {
                                 key={tuition.id}
                                 className="glass-surface flex h-full flex-col overflow-hidden rounded-3xl"
                             >
-                                <div className="relative aspect-[2.4/1] overflow-hidden bg-gradient-to-br from-[#ff9500]/20 to-[#5e5ce6]/20">
+                                <div className="relative aspect-[2.4/1] overflow-hidden bg-gradient-to-br from-[#b86500]/20 to-[#5e5ce6]/20">
                                     {tuition.bannerImage && (
                                         <Image
                                             src={tuition.bannerImage}

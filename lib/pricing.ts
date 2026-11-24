@@ -1,3 +1,5 @@
+import { formatPremiumPrice } from "@/lib/payment-config"
+
 export type Audience = "student" | "tutor"
 
 export type Plan = {
@@ -28,14 +30,14 @@ export const plans: Plan[] = [
     {
         audience: "student",
         name: "Pro",
-        price: "$10 / month",
+        price: formatPremiumPrice("student"),
         note: "For serious learners",
         features: [
             "Unlimited saved tuitions",
             "Priority booking",
             "Verified learner badge",
         ],
-        cta: "Subscribe with Stripe",
+        cta: "Buy Premium",
         href: "/pricing",
         highlighted: true,
     },
@@ -51,14 +53,14 @@ export const plans: Plan[] = [
     {
         audience: "tutor",
         name: "Pro",
-        price: "$15 / month",
+        price: formatPremiumPrice("tutor"),
         note: "For professional mentors",
         features: [
             "Unlimited tuition posts",
             "Verified tutor badge",
             "Priority listing",
         ],
-        cta: "Subscribe with Stripe",
+        cta: "Buy Premium",
         href: "/pricing",
         highlighted: true,
     },

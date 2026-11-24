@@ -76,7 +76,7 @@ export default function AdminOverviewPage() {
                 <StatCard
                     label="Stripe Revenue"
                     value={formatUsd(workspace.summary.totalRevenue)}
-                    hint="Paid Pro subscriptions"
+                    hint="Live Stripe payments"
                     icon={DollarSign}
                 />
             </div>

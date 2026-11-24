@@ -380,11 +380,11 @@ export function TuitionForm({
                                             setImageUrl("")
                                         }
                                     }}
-                                    className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full border border-white/40 bg-black/35 text-white backdrop-blur-md transition hover:bg-black/55"
+                                    className="absolute top-2 right-2 flex size-8 items-center justify-center rounded-full border border-white/40 bg-black/35 backdrop-blur-md text-white transition hover:bg-black/55"
                                 >
                                     <X className="size-4" />
                                 </button>
-                                <span className="absolute bottom-2 left-2 rounded-full border border-white/40 bg-black/30 px-2.5 py-1 text-xs font-semibold text-white backdrop-blur-md">
+                                <span className="absolute bottom-2 left-2 rounded-full border border-white/40 bg-black/30 backdrop-blur-md px-2.5 py-1 text-xs font-semibold text-white">
                                     Preview
                                 </span>
                             </>

@@ -70,8 +70,8 @@ export default function StudentOverviewPage() {
                     value={workspace.plan === "pro" ? "Pro" : "Free"}
                     hint={
                         workspace.plan === "pro"
-                            ? "Unlimited bookmarks"
-                            : "Up to 5 bookmarks"
+                            ? "Unlimited applications"
+                            : "Up to 5 applications"
                     }
                     icon={Sparkles}
                 />
@@ -127,8 +127,8 @@ export default function StudentOverviewPage() {
                         </span>
                         <span className="text-xs font-normal text-muted-foreground">
                             {workspace.plan === "pro"
-                                ? "Unlimited bookmarks"
-                                : "Bookmark without limits"}
+                                ? "Unlimited applications"
+                                : "Apply without limits"}
                         </span>
                     </ButtonLink>
                 </div>

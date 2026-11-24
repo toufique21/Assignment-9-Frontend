@@ -57,6 +57,7 @@ function ProfileView({ user }: { user: ProfileUser }) {
 
     const role = getRole(user.role)
     const plan = user.plan === "pro" ? "pro" : "free"
+    const isAdmin = role === "admin"
 
     function resetForm() {
         setName(user.name ?? "")
@@ -86,7 +87,7 @@ function ProfileView({ user }: { user: ProfileUser }) {
                 name: name.trim(),
                 image: image || null,
                 phone: phone.trim(),
-                bio: bio.trim(),
+                ...(isAdmin ? {} : { bio: bio.trim() }),
             } as unknown as Parameters<typeof authClient.updateUser>[0]
 
             const { error } = await authClient.updateUser(payload)
@@ -125,6 +126,7 @@ function ProfileView({ user }: { user: ProfileUser }) {
                         name={name || user.email || "Member"}
                         size="lg"
                         readOnly={!editing}
+                        isPremium={!isAdmin && plan === "pro"}
                         onUploadingChange={setUploadingImage}
                     />
                 </div>
@@ -135,10 +137,12 @@ function ProfileView({ user }: { user: ProfileUser }) {
                         <span className="text-muted-foreground">Role</span>
                         <StatusBadge status={role} />
                     </div>
-                    <div className="flex items-center justify-between gap-3">
-                        <span className="text-muted-foreground">Plan</span>
-                        <StatusBadge status={plan} />
-                    </div>
+                    {!isAdmin ? (
+                        <div className="flex items-center justify-between gap-3">
+                            <span className="text-muted-foreground">Plan</span>
+                            <StatusBadge status={plan} />
+                        </div>
+                    ) : null}
                     <div className="flex items-center justify-between gap-3">
                         <span className="text-muted-foreground">Verified</span>
                         <StatusBadge
@@ -172,8 +176,10 @@ function ProfileView({ user }: { user: ProfileUser }) {
                             </h2>
                         </div>
                         <p className="mt-1 text-sm text-muted-foreground">
-                            Update your photo and personal details. Role and plan
-                            are managed by account permissions.
+                            Update your photo and personal details.{" "}
+                            {isAdmin
+                                ? "Role is managed by account permissions."
+                                : "Role and plan are managed by account permissions."}
                         </p>
 
                         <div className="mt-6 grid gap-4 sm:grid-cols-2">
@@ -200,26 +206,28 @@ function ProfileView({ user }: { user: ProfileUser }) {
                                 autoComplete="tel"
                                 className="sm:col-span-2"
                             />
-                            <div className="space-y-2 sm:col-span-2">
-                                <label
-                                    htmlFor="profile-bio"
-                                    className="text-sm font-medium"
-                                >
-                                    Bio
-                                </label>
-                                <textarea
-                                    id="profile-bio"
-                                    rows={5}
-                                    maxLength={280}
-                                    placeholder="Tell us a little about yourself..."
-                                    value={bio}
-                                    onChange={(event) => setBio(event.target.value)}
-                                    className="glass-surface min-h-28 w-full rounded-2xl px-4 py-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/60"
-                                />
-                                <p className="text-right text-xs text-muted-foreground">
-                                    {bio.length}/280
-                                </p>
-                            </div>
+                            {!isAdmin ? (
+                                <div className="space-y-2 sm:col-span-2">
+                                    <label
+                                        htmlFor="profile-bio"
+                                        className="text-sm font-medium"
+                                    >
+                                        Bio
+                                    </label>
+                                    <textarea
+                                        id="profile-bio"
+                                        rows={5}
+                                        maxLength={280}
+                                        placeholder="Tell us a little about yourself..."
+                                        value={bio}
+                                        onChange={(event) => setBio(event.target.value)}
+                                        className="glass-surface min-h-28 w-full rounded-2xl px-4 py-3 text-sm outline-none placeholder:text-muted-foreground focus-visible:ring-2 focus-visible:ring-primary/60"
+                                    />
+                                    <p className="text-right text-xs text-muted-foreground">
+                                        {bio.length}/280
+                                    </p>
+                                </div>
+                            ) : null}
                         </div>
 
                         <div className="mt-6 flex flex-wrap gap-3">
@@ -274,12 +282,16 @@ function ProfileView({ user }: { user: ProfileUser }) {
                                 value={phone || "Not added yet"}
                             />
                             <ViewField label="Role" value={role} />
-                            <ViewField label="Plan" value={plan} />
-                            <ViewField
-                                label="Bio"
-                                value={bio || "No bio added yet."}
-                                wide
-                            />
+                            {!isAdmin ? (
+                                <>
+                                    <ViewField label="Plan" value={plan} />
+                                    <ViewField
+                                        label="Bio"
+                                        value={bio || "No bio added yet."}
+                                        wide
+                                    />
+                                </>
+                            ) : null}
                         </dl>
                     </div>
                 )}

@@ -8,7 +8,7 @@ import type { Tuition } from "@/lib/tuitions"
 export function TuitionCard({ tuition }: { tuition: Tuition }) {
     return (
         <article className="glass-surface group flex h-full flex-col overflow-hidden rounded-3xl transition-transform duration-300 hover:-translate-y-1">
-            <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-[#ff9500]/20 to-[#5e5ce6]/20">
+            <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-[#b86500]/20 to-[#5e5ce6]/20">
                 {tuition.bannerImage && (
                     <Image
                         src={tuition.bannerImage}
@@ -19,7 +19,7 @@ export function TuitionCard({ tuition }: { tuition: Tuition }) {
                         className="object-cover transition-transform duration-500 group-hover:scale-105"
                     />
                 )}
-                <span className="absolute top-3 left-3 rounded-full border border-white/40 bg-black/25 px-3 py-1 text-xs font-semibold text-white backdrop-blur-md">
+                <span className="absolute top-3 left-3 rounded-full border border-white/40 bg-black/25 backdrop-blur-md px-3 py-1 text-xs font-semibold text-white">
                     {tuition.mode}
                 </span>
             </div>

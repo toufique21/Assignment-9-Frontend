@@ -1,12 +1,21 @@
 import { adminDb, adminUnauthorized, requireAdmin } from "@/lib/admin-api"
+import { getStripeAdminData } from "@/lib/admin-stripe"
+import { getErrorMessage } from "@/lib/api-client"
+import { PaymentError } from "@/lib/payment-errors"
 
 export async function GET() {
     if (!(await requireAdmin())) {
         return adminUnauthorized()
     }
 
-    const [totalUsers, totalTutors, pendingTuitions, approvedTuitions, payments] =
-        await Promise.all([
+    try {
+        const [
+            totalUsers,
+            totalTutors,
+            pendingTuitions,
+            approvedTuitions,
+            stripe,
+        ] = await Promise.all([
             adminDb.collection("user").countDocuments(),
             adminDb.collection("user").countDocuments({ role: "tutor" }),
             adminDb
@@ -15,25 +24,22 @@ export async function GET() {
             adminDb
                 .collection("tuitions")
                 .countDocuments({ approvalStatus: "approved" }),
-            adminDb
-                .collection("payments")
-                .find(
-                    { paymentStatus: "paid" },
-                    { projection: { amount: 1 } }
-                )
-                .toArray(),
+            getStripeAdminData(),
         ])
 
-    const totalRevenue = payments.reduce(
-        (sum, payment) => sum + Number(payment.amount || 0),
-        0
-    )
+        return Response.json({
+            totalUsers,
+            totalTutors,
+            pendingTuitions,
+            approvedTuitions,
+            totalRevenue: stripe.totalRevenue,
+        })
+    } catch (error) {
+        const status = error instanceof PaymentError ? error.status : 500
 
-    return Response.json({
-        totalUsers,
-        totalTutors,
-        pendingTuitions,
-        approvedTuitions,
-        totalRevenue,
-    })
+        return Response.json(
+            { message: getErrorMessage(error) },
+            { status }
+        )
+    }
 }
