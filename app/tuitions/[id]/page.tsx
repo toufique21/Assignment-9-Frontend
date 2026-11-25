@@ -101,6 +101,13 @@ export default function TuitionDetailPage() {
         )
     }
 
+    const hasApplied =
+        isStudent &&
+        studentWorkspace.email === user?.email &&
+        studentWorkspace.applications.some(
+            (application) => application.tuitionId === tuition.id
+        )
+
     return (
         <div className="py-10 sm:py-14">
             <Container>
@@ -186,7 +193,27 @@ export default function TuitionDetailPage() {
                                 </p>
 
                                 {isStudent ? (
-                                    applicationLimitReached ? (
+                                    hasApplied ? (
+                                        <div className="mt-6 rounded-2xl bg-[var(--glass-tint-soft)] p-5 text-center">
+                                            <span className="mx-auto flex size-11 items-center justify-center rounded-2xl bg-primary/12 text-primary">
+                                                <CheckCircle2 className="size-5" />
+                                            </span>
+                                            <p className="mt-3 text-sm font-medium">
+                                                You already applied to this
+                                                tuition.
+                                            </p>
+                                            <p className="mt-1 text-sm text-muted-foreground">
+                                                You can track its status in your
+                                                applications.
+                                            </p>
+                                            <ButtonLink
+                                                href="/dashboard/student/my-applications"
+                                                className="mt-4 w-full"
+                                            >
+                                                View my applications
+                                            </ButtonLink>
+                                        </div>
+                                    ) : applicationLimitReached ? (
                                         <div className="mt-6 rounded-2xl bg-[var(--glass-tint-soft)] p-5 text-center">
                                             <p className="text-sm font-medium">
                                                 You have used all{" "}
