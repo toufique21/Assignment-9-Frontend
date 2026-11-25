@@ -123,6 +123,8 @@ export default function AdminTuitionsPage() {
                 <div className="grid gap-4 lg:grid-cols-2">
                     {visibleTuitions.map((tuition) => {
                         const isBusy = busyId === tuition.id
+                        const isApproved = tuition.approvalStatus === "approved"
+                        const isRejected = tuition.approvalStatus === "rejected"
 
                         return (
                             <article
@@ -187,21 +189,21 @@ export default function AdminTuitionsPage() {
                                     <Button
                                         type="button"
                                         size="sm"
-                                        disabled={isBusy || tuition.approvalStatus === "approved"}
+                                        disabled={isBusy || isApproved}
                                         onClick={() => handleApproval(tuition.id, "approved")}
                                     >
                                         <Check />
-                                        Approve
+                                        {isApproved ? "Approved" : "Approve"}
                                     </Button>
                                     <Button
                                         type="button"
                                         variant="destructive"
                                         size="sm"
-                                        disabled={isBusy || tuition.approvalStatus === "rejected"}
+                                        disabled={isBusy || isRejected}
                                         onClick={() => handleApproval(tuition.id, "rejected")}
                                     >
                                         <X />
-                                        Reject
+                                        {isRejected ? "Rejected" : "Reject"}
                                     </Button>
                                 </div>
                             </article>
