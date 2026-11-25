@@ -146,44 +146,54 @@ export default function ApplicantsPage() {
                                 </p>
                             </div>
 
-                            <div className="mt-auto flex flex-wrap gap-2 border-t border-border pt-4">
-                                <Button
-                                    type="button"
-                                    size="sm"
-                                    variant={
-                                        application.status === "accepted"
-                                            ? "default"
-                                            : "secondary"
-                                    }
-                                    onClick={() =>
-                                        changeStatus(application.id, "accepted")
-                                    }
-                                >
-                                    Accept
-                                </Button>
-                                <Button
-                                    type="button"
-                                    size="sm"
-                                    variant="destructive"
-                                    onClick={() =>
-                                        changeStatus(application.id, "rejected")
-                                    }
-                                >
-                                    Reject
-                                </Button>
-                                {application.status !== "pending" ? (
-                                    <Button
-                                        type="button"
-                                        size="sm"
-                                        variant="ghost"
-                                        onClick={() =>
-                                            changeStatus(application.id, "pending")
-                                        }
-                                    >
-                                        Reset
-                                    </Button>
-                                ) : null}
-                            </div>
+                            {filter === "all" ? null : (
+                                <div className="mt-auto flex flex-wrap gap-2 border-t border-border pt-4">
+                                    {filter === "pending" ? (
+                                        <>
+                                            <Button
+                                                type="button"
+                                                size="sm"
+                                                onClick={() =>
+                                                    changeStatus(
+                                                        application.id,
+                                                        "accepted"
+                                                    )
+                                                }
+                                            >
+                                                Accept
+                                            </Button>
+                                            <Button
+                                                type="button"
+                                                size="sm"
+                                                variant="destructive"
+                                                onClick={() =>
+                                                    changeStatus(
+                                                        application.id,
+                                                        "rejected"
+                                                    )
+                                                }
+                                            >
+                                                Reject
+                                            </Button>
+                                        </>
+                                    ) : (
+                                        <Button
+                                            type="button"
+                                            size="sm"
+                                            variant={
+                                                filter === "accepted"
+                                                    ? "default"
+                                                    : "destructive"
+                                            }
+                                            disabled
+                                        >
+                                            {filter === "accepted"
+                                                ? "Approved"
+                                                : "Rejected"}
+                                        </Button>
+                                    )}
+                                </div>
+                            )}
                         </article>
                     ))}
                 </div>
