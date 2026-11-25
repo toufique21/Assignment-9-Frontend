@@ -148,50 +148,41 @@ export default function ApplicantsPage() {
 
                             {filter === "all" ? null : (
                                 <div className="mt-auto flex flex-wrap gap-2 border-t border-border pt-4">
-                                    {filter === "pending" ? (
-                                        <>
-                                            <Button
-                                                type="button"
-                                                size="sm"
-                                                onClick={() =>
-                                                    changeStatus(
-                                                        application.id,
-                                                        "accepted"
-                                                    )
-                                                }
-                                            >
-                                                Accept
-                                            </Button>
-                                            <Button
-                                                type="button"
-                                                size="sm"
-                                                variant="destructive"
-                                                onClick={() =>
-                                                    changeStatus(
-                                                        application.id,
-                                                        "rejected"
-                                                    )
-                                                }
-                                            >
-                                                Reject
-                                            </Button>
-                                        </>
-                                    ) : (
-                                        <Button
-                                            type="button"
-                                            size="sm"
-                                            variant={
-                                                filter === "accepted"
-                                                    ? "default"
-                                                    : "destructive"
-                                            }
-                                            disabled
-                                        >
-                                            {filter === "accepted"
-                                                ? "Approved"
-                                                : "Rejected"}
-                                        </Button>
-                                    )}
+                                    <Button
+                                        type="button"
+                                        size="sm"
+                                        disabled={
+                                            application.status === "accepted"
+                                        }
+                                        onClick={() =>
+                                            changeStatus(
+                                                application.id,
+                                                "accepted"
+                                            )
+                                        }
+                                    >
+                                        {application.status === "accepted"
+                                            ? "Approved"
+                                            : "Approve"}
+                                    </Button>
+                                    <Button
+                                        type="button"
+                                        size="sm"
+                                        variant="destructive"
+                                        disabled={
+                                            application.status === "rejected"
+                                        }
+                                        onClick={() =>
+                                            changeStatus(
+                                                application.id,
+                                                "rejected"
+                                            )
+                                        }
+                                    >
+                                        {application.status === "rejected"
+                                            ? "Rejected"
+                                            : "Reject"}
+                                    </Button>
                                 </div>
                             )}
                         </article>
