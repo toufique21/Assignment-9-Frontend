@@ -1,6 +1,6 @@
 "use client"
 
-import { Save, Search } from "lucide-react"
+import { Search } from "lucide-react"
 import Link from "next/link"
 import { useState } from "react"
 
@@ -189,8 +189,7 @@ export default function AdminUsersPage() {
                                                 <Button
                                                     type="button"
                                                     variant="secondary"
-                                                    size="icon-sm"
-                                                    aria-label={`Save role for ${user.name}`}
+                                                    size="sm"
                                                     disabled={
                                                         isSelf ||
                                                         !isDirty ||
@@ -198,7 +197,7 @@ export default function AdminUsersPage() {
                                                     }
                                                     onClick={() => handleSave(user)}
                                                 >
-                                                    <Save />
+                                                    Save
                                                 </Button>
                                             </div>
                                         </td>
