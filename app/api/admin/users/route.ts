@@ -13,11 +13,13 @@ export async function GET() {
                 projection: {
                     name: 1,
                     email: 1,
+                    image: 1,
                     role: 1,
                     plan: 1,
                     phone: 1,
                     bio: 1,
                     createdAt: 1,
+                    emailVerified: 1,
                 },
             }
         )

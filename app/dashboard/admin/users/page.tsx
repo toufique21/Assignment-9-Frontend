@@ -1,6 +1,7 @@
 "use client"
 
 import { Save, Search } from "lucide-react"
+import Link from "next/link"
 import { useState } from "react"
 
 import { ErrorState } from "@/components/dashboard/error-state"
@@ -142,10 +143,17 @@ export default function AdminUsersPage() {
                                 return (
                                     <tr key={user.id} className="hover:bg-white/5">
                                         <td className="px-5 py-4">
-                                            <p className="font-medium">{user.name}</p>
-                                            <p className="text-xs text-muted-foreground">
-                                                {user.email}
-                                            </p>
+                                            <Link
+                                                href={`/dashboard/admin/users/${user.id}`}
+                                                className="inline-flex flex-col gap-0.5 hover:text-primary hover:underline"
+                                            >
+                                                <span className="font-medium">
+                                                    {user.name}
+                                                </span>
+                                                <span className="text-xs text-muted-foreground">
+                                                    {user.email}
+                                                </span>
+                                            </Link>
                                         </td>
                                         <td className="px-5 py-4">
                                             <StatusBadge status={user.role} />

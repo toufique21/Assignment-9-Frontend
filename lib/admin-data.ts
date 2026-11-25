@@ -14,11 +14,13 @@ export type AdminUser = {
     id: string
     name: string
     email: string
+    image?: string | null
     role: UserRole
     plan: "free" | "pro"
     phone?: string
     bio?: string
     createdAt?: string
+    emailVerified?: boolean | null
 }
 
 export type AdminTransaction = {
