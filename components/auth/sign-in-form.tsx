@@ -4,7 +4,6 @@ import { useRouter } from "next/navigation"
 import { useState, type FormEvent } from "react"
 
 import { AuthField } from "@/components/auth/auth-field"
-import { GoogleButton } from "@/components/auth/google-button"
 import { Button } from "@/components/ui/button"
 import { useToast } from "@/components/ui/toast"
 import { authClient } from "@/lib/auth-client"
@@ -15,7 +14,6 @@ export function SignInForm() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(false)
-    const [googleLoading, setGoogleLoading] = useState(false)
 
     async function handleSubmit(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
@@ -54,28 +52,6 @@ export function SignInForm() {
         }
     }
 
-    async function handleGoogle() {
-        setGoogleLoading(true)
-
-        try {
-            const { error } = await authClient.signIn.social({
-                provider: "google",
-                callbackURL: "/",
-            })
-
-            if (error) {
-                notify(
-                    error.message ?? "Google sign-in is not configured yet.",
-                    "error"
-                )
-                setGoogleLoading(false)
-            }
-        } catch {
-            notify("Could not start Google sign-in.", "error")
-            setGoogleLoading(false)
-        }
-    }
-
     return (
         <div className="space-y-4">
             <form onSubmit={handleSubmit} className="space-y-4" noValidate>
@@ -103,14 +79,6 @@ export function SignInForm() {
                     {loading ? "Signing in..." : "Sign In"}
                 </Button>
             </form>
-
-            <div className="flex items-center gap-3 text-xs text-muted-foreground">
-                <span className="h-px flex-1 bg-border" />
-                or continue with
-                <span className="h-px flex-1 bg-border" />
-            </div>
-
-            <GoogleButton onClick={handleGoogle} disabled={googleLoading} />
         </div>
     )
 }

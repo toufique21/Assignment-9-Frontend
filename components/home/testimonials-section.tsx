@@ -44,7 +44,7 @@ export function TestimonialsSection() {
                             key={testimonial.name}
                             className="glass-surface flex h-full flex-col gap-5 rounded-3xl p-6"
                         >
-                            <div className="flex gap-1 text-[#b86500]" aria-label="5 out of 5 stars">
+                            <div className="flex gap-1 text-[#fc8e2d]" aria-label="5 out of 5 stars">
                                 {Array.from({ length: 5 }).map((_, index) => (
                                     <Star key={index} className="size-4 fill-current" />
                                 ))}
@@ -53,7 +53,7 @@ export function TestimonialsSection() {
                                 “{testimonial.quote}”
                             </blockquote>
                             <figcaption className="flex items-center gap-3">
-                                <span className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[#b86500] to-[#5e5ce6] text-sm font-semibold text-white">
+                                <span className="flex size-10 items-center justify-center rounded-full bg-gradient-to-br from-[#fc8e2d] to-[#5e5ce6] text-sm font-semibold text-white">
                                     {testimonial.name.charAt(0)}
                                 </span>
                                 <div>

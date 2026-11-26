@@ -12,7 +12,7 @@ export function HeroSection() {
         <section className="relative overflow-hidden py-16 sm:py-24">
             <div
                 aria-hidden="true"
-                className="absolute -top-32 -left-32 size-96 rounded-full bg-[#b86500]/20 blur-3xl"
+                className="absolute -top-32 -left-32 size-96 rounded-full bg-[#fc8e2d]/20 blur-3xl"
             />
             <div
                 aria-hidden="true"
@@ -77,7 +77,7 @@ export function HeroSection() {
 
                 <div className="relative">
                     <div className="glass-surface relative aspect-[4/3] overflow-hidden rounded-[2rem] p-2">
-                        <div className="relative h-full w-full overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-[#b86500]/20 to-[#5e5ce6]/20">
+                        <div className="relative h-full w-full overflow-hidden rounded-[1.6rem] bg-gradient-to-br from-[#fc8e2d]/20 to-[#5e5ce6]/20">
                             <Image
                                 src={heroImage}
                                 alt="Students learning together with a tutor"

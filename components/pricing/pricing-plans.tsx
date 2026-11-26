@@ -24,6 +24,8 @@ export function PricingPlans() {
         | { role?: string | null; plan?: string | null }
         | undefined
     const role = getRole(user?.role)
+    const isSignedIn = Boolean(user)
+    const isAdmin = role === "admin"
     const isPremium = user?.plan === "pro"
     const [audience, setAudience] = useState<Audience>("student")
     const [busy, setBusy] = useState<PremiumAudience | null>(null)
@@ -130,24 +132,55 @@ export function PricingPlans() {
                                 ))}
                             </ul>
 
-                            {isPro ? (
-                                isPremium ? (
+                            {!session.isPending &&
+                                !isAdmin &&
+                                (isPro ? (
+                                    wrongRole ? (
+                                        <Button
+                                            type="button"
+                                            disabled
+                                            variant="secondary"
+                                            className="w-full"
+                                        >
+                                            Not allowed
+                                        </Button>
+                                    ) : isPremium ? (
+                                        <ButtonLink
+                                            href={`/dashboard/${role}`}
+                                            variant="secondary"
+                                            className="w-full"
+                                        >
+                                            Premium active
+                                        </ButtonLink>
+                                    ) : (
+                                        <Button
+                                            type="button"
+                                            onClick={() =>
+                                                handleCheckout(
+                                                    plan.audience as PremiumAudience
+                                                )
+                                            }
+                                            disabled={busy !== null}
+                                            variant={
+                                                plan.highlighted
+                                                    ? "default"
+                                                    : "secondary"
+                                            }
+                                            className="w-full"
+                                        >
+                                            {isBusy ? (
+                                                <>
+                                                    <Loader2 className="size-4 animate-spin" />
+                                                    Opening checkout...
+                                                </>
+                                            ) : (
+                                                plan.cta
+                                            )}
+                                        </Button>
+                                    )
+                                ) : !isSignedIn ? (
                                     <ButtonLink
-                                        href={`/dashboard/${role}`}
-                                        variant="secondary"
-                                        className="w-full"
-                                    >
-                                        Premium active
-                                    </ButtonLink>
-                                ) : (
-                                    <Button
-                                        type="button"
-                                        onClick={() =>
-                                            handleCheckout(
-                                                plan.audience as PremiumAudience
-                                            )
-                                        }
-                                        disabled={wrongRole || busy !== null}
+                                        href={plan.href}
                                         variant={
                                             plan.highlighted
                                                 ? "default"
@@ -155,31 +188,9 @@ export function PricingPlans() {
                                         }
                                         className="w-full"
                                     >
-                                        {isBusy ? (
-                                            <>
-                                                <Loader2 className="size-4 animate-spin" />
-                                                Opening checkout...
-                                            </>
-                                        ) : wrongRole ? (
-                                            `Use your ${role} tab`
-                                        ) : (
-                                            plan.cta
-                                        )}
-                                    </Button>
-                                )
-                            ) : (
-                                <ButtonLink
-                                    href={plan.href}
-                                    variant={
-                                        plan.highlighted
-                                            ? "default"
-                                            : "secondary"
-                                    }
-                                    className="w-full"
-                                >
-                                    {plan.cta}
-                                </ButtonLink>
-                            )}
+                                        {plan.cta}
+                                    </ButtonLink>
+                                ) : null)}
                         </article>
                     )
                 })}

@@ -11,7 +11,7 @@ export function Brand({ className }: { className?: string }) {
             aria-label="MentorLagbe home"
             className={cn("inline-flex items-center gap-2.5", className)}
         >
-            <span className="flex size-9 items-center justify-center rounded-[12px] bg-gradient-to-br from-[#b86500] to-[#5e5ce6] text-white shadow-[0_8px_20px_-8px_rgba(184,101,0,0.85)] ring-1 ring-white/30">
+            <span className="flex size-9 items-center justify-center rounded-[12px] bg-gradient-to-br from-[#fc8e2d] to-[#5e5ce6] text-white shadow-[0_8px_20px_-8px_rgba(252,142,45,0.85)] ring-1 ring-white/30">
                 <GraduationCap className="size-5" aria-hidden="true" />
             </span>
             <span className="font-heading text-[1.0625rem] font-semibold tracking-tight text-foreground">

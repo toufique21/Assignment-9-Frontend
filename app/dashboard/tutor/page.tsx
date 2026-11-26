@@ -14,6 +14,7 @@ import { StatCard } from "@/components/dashboard/stat-card"
 import { StatusBadge } from "@/components/dashboard/status-badge"
 import { ButtonLink } from "@/components/ui/button"
 import { PremiumCrown } from "@/components/ui/premium-crown"
+import { ProPlanLabel } from "@/components/ui/pro-plan-label"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useTutorWorkspace } from "@/hooks/use-tutor-workspace"
 import { canPostTuition } from "@/lib/tutor-data"
@@ -69,21 +70,13 @@ export default function TutorOverviewPage() {
                 />
                 <StatCard
                     label="Current Plan"
-                    value={workspace.plan === "pro" ? "Pro" : "Free"}
+                    value={workspace.plan === "pro" ? <ProPlanLabel /> : "Free"}
                     hint={
                         workspace.plan === "pro"
                             ? "Unlimited posts"
                             : "Up to 2 tuition posts"
                     }
                     icon={workspace.plan === "pro" ? Crown : Sparkles}
-                    valueIcon={
-                        workspace.plan === "pro" ? <PremiumCrown /> : undefined
-                    }
-                    valueClassName={
-                        workspace.plan === "pro"
-                            ? "text-[#7c3aed] dark:text-[#a78bfa]"
-                            : undefined
-                    }
                 />
             </div>
 
@@ -135,12 +128,18 @@ export default function TutorOverviewPage() {
                         <span
                             className={
                                 workspace.plan === "pro"
-                                    ? "flex items-center gap-1.5 text-[#7c3aed] dark:text-[#a78bfa]"
+                                    ? "inline-flex items-center gap-1.5 text-[#7c3aed] dark:text-[#a78bfa]"
                                     : undefined
                             }
                         >
-                            {workspace.plan === "pro" ? <PremiumCrown /> : null}
-                            {workspace.plan === "pro" ? "Pro active" : "Upgrade to Pro"}
+                            {workspace.plan === "pro" ? (
+                                <>
+                                    Pro active
+                                    <PremiumCrown className="size-4 rotate-0" />
+                                </>
+                            ) : (
+                                "Upgrade to Pro"
+                            )}
                         </span>
                         <span className="text-xs font-normal text-muted-foreground">
                             {workspace.plan === "pro"

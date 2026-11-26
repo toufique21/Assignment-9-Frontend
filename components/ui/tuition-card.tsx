@@ -8,7 +8,7 @@ import type { Tuition } from "@/lib/tuitions"
 export function TuitionCard({ tuition }: { tuition: Tuition }) {
     return (
         <article className="glass-surface group flex h-full flex-col overflow-hidden rounded-3xl transition-transform duration-300 hover:-translate-y-1">
-            <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-[#b86500]/20 to-[#5e5ce6]/20">
+            <div className="relative aspect-video overflow-hidden bg-gradient-to-br from-[#fc8e2d]/20 to-[#5e5ce6]/20">
                 {tuition.bannerImage && (
                     <Image
                         src={tuition.bannerImage}

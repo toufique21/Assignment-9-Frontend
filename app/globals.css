@@ -54,7 +54,7 @@
     --card-foreground: #1c1c1e;
     --popover: rgba(255, 255, 255, 0.86);
     --popover-foreground: #1c1c1e;
-    --primary: #b86500;
+    --primary: #fc8e2d;
     --primary-foreground: #1c1c1e;
     --secondary: rgba(255, 255, 255, 0.6);
     --secondary-foreground: #1c1c1e;
@@ -65,8 +65,8 @@
     --destructive: #ff3b30;
     --border: rgba(60, 60, 67, 0.12);
     --input: rgba(255, 255, 255, 0.7);
-    --ring: #b86500;
-    --chart-1: #b86500;
+    --ring: #fc8e2d;
+    --chart-1: #fc8e2d;
     --chart-2: #34c759;
     --chart-3: #c4780a;
     --chart-4: #5e5ce6;
@@ -75,12 +75,12 @@
 
     --sidebar: rgba(255, 255, 255, 0.66);
     --sidebar-foreground: #1c1c1e;
-    --sidebar-primary: #b86500;
+    --sidebar-primary: #fc8e2d;
     --sidebar-primary-foreground: #1c1c1e;
     --sidebar-accent: rgba(0, 122, 255, 0.1);
     --sidebar-accent-foreground: #8a4e00;
     --sidebar-border: rgba(60, 60, 67, 0.1);
-    --sidebar-ring: #b86500;
+    --sidebar-ring: #fc8e2d;
 
     --glass-bg: rgba(255, 255, 255, 0.62);
     --glass-border: rgba(255, 255, 255, 0.78);
@@ -96,7 +96,7 @@
     --card-foreground: #f2f2f7;
     --popover: rgba(36, 36, 38, 0.88);
     --popover-foreground: #f2f2f7;
-    --primary: #b86500;
+    --primary: #fc8e2d;
     --primary-foreground: #1c1c1e;
     --secondary: rgba(255, 255, 255, 0.1);
     --secondary-foreground: #f2f2f7;
@@ -107,8 +107,8 @@
     --destructive: #ff453a;
     --border: rgba(255, 255, 255, 0.12);
     --input: rgba(255, 255, 255, 0.08);
-    --ring: #b86500;
-    --chart-1: #b86500;
+    --ring: #fc8e2d;
+    --chart-1: #fc8e2d;
     --chart-2: #30d158;
     --chart-3: #c4780a;
     --chart-4: #5e5ce6;
@@ -116,12 +116,12 @@
 
     --sidebar: rgba(20, 20, 22, 0.72);
     --sidebar-foreground: #f2f2f7;
-    --sidebar-primary: #b86500;
+    --sidebar-primary: #fc8e2d;
     --sidebar-primary-foreground: #1c1c1e;
     --sidebar-accent: rgba(10, 132, 255, 0.18);
     --sidebar-accent-foreground: #d98a2b;
     --sidebar-border: rgba(255, 255, 255, 0.1);
-    --sidebar-ring: #b86500;
+    --sidebar-ring: #fc8e2d;
 
     --glass-bg: rgba(28, 28, 30, 0.6);
     --glass-border: rgba(255, 255, 255, 0.12);
@@ -220,7 +220,7 @@
     }
 
     .glass-primary {
-        --glass-tint: #b86500;
+        --glass-tint: #fc8e2d;
         color: #1c1c1e;
         border-color: rgba(255, 255, 255, 0.3);
     }

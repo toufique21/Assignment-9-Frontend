@@ -8,15 +8,13 @@ export function StatCard({
     value,
     hint,
     icon: Icon,
-    valueIcon,
     valueClassName,
     className,
 }: {
     label: string
-    value: string | number
+    value: ReactNode
     hint?: string
     icon: LucideIcon
-    valueIcon?: ReactNode
     valueClassName?: string
     className?: string
 }) {
@@ -34,7 +32,6 @@ export function StatCard({
                     valueClassName
                 )}
             >
-                {valueIcon}
                 <span>{value}</span>
             </p>
             {hint ? (

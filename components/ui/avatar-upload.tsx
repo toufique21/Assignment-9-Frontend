@@ -102,7 +102,7 @@ export function AvatarUpload({
     return (
         <div className="flex flex-col items-center gap-3">
             <div className={cn("relative", avatarClass)}>
-                <div className="relative h-full w-full overflow-hidden rounded-full bg-gradient-to-br from-[#b86500] to-[#5e5ce6] ring-2 ring-white/40">
+                <div className="relative h-full w-full overflow-hidden rounded-full bg-gradient-to-br from-[#fc8e2d] to-[#5e5ce6] ring-2 ring-white/40">
                     {displayUrl ? (
                         <Image
                             src={displayUrl}

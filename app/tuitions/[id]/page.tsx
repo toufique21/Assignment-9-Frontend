@@ -45,6 +45,7 @@ export default function TuitionDetailPage() {
         | { name?: string | null; email?: string | null; role?: string | null }
         | undefined
     const role = getRole(user?.role)
+    const dashboardHref = user ? `/dashboard/${role}` : "/sign-in"
     const isStudent = Boolean(user) && role === "student"
     const { workspace: studentWorkspace } = useStudentWorkspace()
     const applicationLimitReached =
@@ -123,7 +124,7 @@ export default function TuitionDetailPage() {
 
                 <div className="mt-5 grid gap-6 lg:grid-cols-[1.6fr_1fr]">
                     <article className="glass-surface overflow-hidden rounded-3xl">
-                        <div className="relative aspect-video bg-gradient-to-br from-[#b86500]/20 to-[#5e5ce6]/20">
+                        <div className="relative aspect-video bg-gradient-to-br from-[#fc8e2d]/20 to-[#5e5ce6]/20">
                             {tuition.bannerImage ? (
                                 <Image
                                     src={tuition.bannerImage}
@@ -247,7 +248,7 @@ export default function TuitionDetailPage() {
                                                 : "Sign in as a student to apply for this tuition."}
                                         </p>
                                         <ButtonLink
-                                            href="/sign-in"
+                                            href={dashboardHref}
                                             className="mt-4 w-full"
                                         >
                                             {user ? "Go to my dashboard" : "Sign in"}
@@ -334,7 +335,7 @@ function TutorProfileCard({
             </div>
 
             <div className="mt-6 flex flex-col items-center text-center">
-                <div className="relative size-20 overflow-hidden rounded-full bg-gradient-to-br from-[#b86500] to-[#5e5ce6] ring-2 ring-white/40">
+                <div className="relative size-20 overflow-hidden rounded-full bg-gradient-to-br from-[#fc8e2d] to-[#5e5ce6] ring-2 ring-white/40">
                     {image ? (
                         <Image
                             src={image}
@@ -351,7 +352,7 @@ function TutorProfileCard({
                     )}
                 </div>
                 <h3 className="font-heading mt-3 text-lg font-semibold">{name}</h3>
-                <span className="mt-3 rounded-full bg-[#b86500]/15 px-3 py-1 text-xs font-semibold text-[#8a4e00] dark:text-[#d98a2b]">
+                <span className="mt-3 rounded-full bg-[#fc8e2d]/15 px-3 py-1 text-xs font-semibold text-[#8a4e00] dark:text-[#d98a2b]">
                     {profile?.role === "tutor" ? "Verified Tutor" : "Tutor"}
                 </span>
             </div>

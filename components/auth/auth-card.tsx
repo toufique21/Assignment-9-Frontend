@@ -17,7 +17,7 @@ export function AuthCard({
         <section className="relative flex min-h-[calc(100svh-4rem)] items-center justify-center overflow-hidden px-4 py-12">
             <div
                 aria-hidden="true"
-                className="absolute -top-32 -left-32 size-96 rounded-full bg-[#b86500]/15 blur-3xl"
+                className="absolute -top-32 -left-32 size-96 rounded-full bg-[#fc8e2d]/15 blur-3xl"
             />
             <div
                 aria-hidden="true"

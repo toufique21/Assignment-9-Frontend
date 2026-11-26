@@ -16,6 +16,7 @@ import { useEffect, useRef, useState } from "react"
 import { Brand } from "@/components/layout/brand"
 import { ButtonLink } from "@/components/ui/button"
 import { PremiumCrown } from "@/components/ui/premium-crown"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { useToast } from "@/components/ui/toast"
 import { authClient } from "@/lib/auth-client"
 import { publicLinks } from "@/lib/navigation"
@@ -33,7 +34,7 @@ type NavUser = {
 type SessionState = ReturnType<typeof authClient.useSession>
 
 const roleStyles = {
-    student: "bg-[#b86500]/15 text-[#8a4e00] dark:text-[#d98a2b]",
+    student: "bg-[#fc8e2d]/15 text-[#8a4e00] dark:text-[#d98a2b]",
     tutor: "bg-[#34c759]/15 text-[#248a3d] dark:text-[#75e28b]",
     admin: "bg-[#5e5ce6]/15 text-[#4b49c7] dark:text-[#a7a5ff]",
 }
@@ -75,12 +76,14 @@ function Avatar({ user }: { user: NavUser }) {
                     className="size-8 rounded-full object-cover ring-1 ring-white/40"
                 />
             ) : (
-                <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-[#b86500] to-[#5e5ce6] text-xs font-semibold text-white ring-1 ring-white/40">
+                <span className="flex size-8 items-center justify-center rounded-full bg-gradient-to-br from-[#fc8e2d] to-[#5e5ce6] text-xs font-semibold text-white ring-1 ring-white/40">
                     {initial}
                 </span>
             )}
             {isPremium(user) ? (
-                <PremiumCrown className="absolute -top-1 -right-1" />
+                <span className="absolute -top-1 -right-1 flex size-5 items-center justify-center rounded-full bg-[#ede9fe] ring-1 ring-white/70 dark:bg-[#7c3aed]/30">
+                    <PremiumCrown className="size-3.5" />
+                </span>
             ) : null}
         </span>
     )
@@ -324,6 +327,7 @@ export function Navbar() {
 
                 <div className="hidden items-center gap-6 md:flex">
                     <NavLinks pathname={pathname} />
+                    <ThemeToggle />
                     <AuthControls session={session} />
                 </div>
 
@@ -346,11 +350,14 @@ export function Navbar() {
                     id="mobile-navigation"
                     className="glass-surface mx-4 mb-3 rounded-3xl p-3 sm:mx-6 md:hidden"
                 >
-                    <NavLinks
-                        pathname={pathname}
-                        stacked
-                        onNavigate={() => setMenuOpen(false)}
-                    />
+                    <div className="flex items-start justify-between gap-2">
+                        <NavLinks
+                            pathname={pathname}
+                            stacked
+                            onNavigate={() => setMenuOpen(false)}
+                        />
+                        <ThemeToggle />
+                    </div>
                     <div className="my-3 h-px bg-border" />
                     <AuthControls
                         session={session}
