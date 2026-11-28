@@ -87,7 +87,6 @@ export function ProfilePanel({
                 return
             }
 
-            await authClient.getSession()
             notify("Profile updated.")
             setEditing(false)
             router.refresh()

@@ -10,8 +10,27 @@ export const db = client.db("mentorLagbe");
 const googleClientId = process.env.GOOGLE_CLIENT_ID;
 const googleClientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
+const canonicalAuthUrl =
+    process.env.BETTER_AUTH_URL || "http://localhost:3000"
+
+let canonicalHost = "localhost:3000"
+try {
+    canonicalHost = new URL(canonicalAuthUrl).host
+} catch {
+    canonicalHost = "localhost:3000"
+}
+
 export const auth = betterAuth({
-    baseURL: process.env.BETTER_AUTH_URL,
+    baseURL: {
+        allowedHosts: [
+            canonicalHost,
+            "localhost:3000",
+            "localhost:*",
+            "*.vercel.app",
+        ],
+        protocol: canonicalAuthUrl.startsWith("https://") ? "https" : "http",
+        fallback: canonicalAuthUrl,
+    },
     secret: process.env.BETTER_AUTH_SECRET,
     emailAndPassword: {
         enabled: true,

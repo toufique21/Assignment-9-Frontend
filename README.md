@@ -4,9 +4,11 @@
 
 MentorLagbe Client is the Next.js frontend for a role-based tutoring marketplace. Students can browse and apply for tuitions, tutors can post and manage tuitions and applicants, and admins can approve tuitions, manage users, and review Stripe payment records. The app uses BetterAuth for sessions, JWT-backed requests to the Express API, and hosted Stripe Checkout for Premium upgrades.
 
-## Live URL
+## Live URLs
 
-`http://localhost:3000`
+- Production client: `https://mentorlagbe-client-vert.vercel.app`
+- Production server: `https://mentorlagbe-server-lyart.vercel.app`
+- Local client: `http://localhost:3000`
 
 ## Admin Credentials
 
@@ -31,7 +33,8 @@ MentorLagbe Client is the Next.js frontend for a role-based tutoring marketplace
 - Profile page with view/edit modes and ImgBB profile photo upload.
 - Hosted Stripe Checkout for one-time Premium purchases.
 - Success and failed payment pages with client-side checkout confirmation.
-- Glass-style orange UI with responsive layouts and toast notifications.
+- Glass-style orange UI with responsive layouts and Sonner toast notifications.
+- Route-level skeleton loaders and custom 404/error pages with recovery actions.
 
 ## Getting Started
 
@@ -55,10 +58,11 @@ Open `http://localhost:3000`.
 
 ### Environment
 
-Create or update `.env` with the required values:
+For local development, create or update `.env` with the required values:
 
 ```env
 BETTER_AUTH_URL=http://localhost:3000
+NEXT_PUBLIC_BETTER_AUTH_URL=http://localhost:3000
 BETTER_AUTH_SECRET=your-better-auth-secret
 JWT_SECRET=same-secret-used-by-the-backend
 
@@ -72,7 +76,26 @@ STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
 NEXT_PUBLIC_IMGBB_API_KEY=your-imgbb-api-key
 ```
 
-`JWT_SECRET` must match the backend `JWT_SECRET` so the Express API can verify tokens minted by this app.
+For Vercel, set `BETTER_AUTH_URL` to the **permanent client URL** and the API URLs to the **deployed backend URL**:
+
+```env
+BETTER_AUTH_URL=https://mentorlagbe-client-vert.vercel.app
+NEXT_PUBLIC_BETTER_AUTH_URL=https://mentorlagbe-client-vert.vercel.app
+BETTER_AUTH_TRUSTED_ORIGINS=https://mentorlagbe-client-vert.vercel.app,https://*.vercel.app
+BETTER_AUTH_SECRET=your-better-auth-secret
+JWT_SECRET=same-secret-used-by-the-backend
+
+SERVER_URL=https://mentorlagbe-server-lyart.vercel.app
+NEXT_PUBLIC_API_URL=https://mentorlagbe-server-lyart.vercel.app
+
+MONGODB_URI=your-mongodb-uri
+
+STRIPE_SECRET_KEY=your-stripe-secret-key
+STRIPE_PUBLISHABLE_KEY=your-stripe-publishable-key
+NEXT_PUBLIC_IMGBB_API_KEY=your-imgbb-api-key
+```
+
+Do not add a trailing slash to URLs. The browser auth client calls the current hostname, and BetterAuth trusts the Vercel preview hostnames through `*.vercel.app`, so signing in and opening the dashboard work on either the permanent URL or a deployment URL. `JWT_SECRET` must match the backend `JWT_SECRET`, and `BETTER_AUTH_SECRET` must stay the same across local and deployed environments or existing sessions will stop working. Redeploy after changing `NEXT_PUBLIC_*` values because they are baked into the client build.
 
 ## NPM Packages Used
 
@@ -93,6 +116,7 @@ NEXT_PUBLIC_IMGBB_API_KEY=your-imgbb-api-key
 | `react`                       | `19.3.1`  | UI library                                   |
 | `react-dom`                   | `19.3.1`  | React DOM renderer                           |
 | `shadcn`                      | `^4.23.0` | Component tooling                            |
+| `sonner`                      | `^2.0.8`  | Toast notifications                          |
 | `stripe`                      | `^23.2.0` | Stripe server SDK                            |
 | `tw-animate-css`              | `^1.4.0`  | Tailwind animation utilities                 |
 

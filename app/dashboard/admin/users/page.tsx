@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/components/ui/toast"
 import { useAdminWorkspace } from "@/hooks/use-admin-workspace"
-import { authClient } from "@/lib/auth-client"
+import { useSession } from "@/lib/auth-client"
 import {
     reloadAdminWorkspace,
     updateUserRole,
@@ -26,7 +26,7 @@ const fieldClass =
 export default function AdminUsersPage() {
     const { workspace, error, isPending, isReady } = useAdminWorkspace()
     const { notify } = useToast()
-    const session = authClient.useSession()
+    const session = useSession()
     const currentEmail = session.data?.user?.email
     const [search, setSearch] = useState("")
     const [roleFilter, setRoleFilter] = useState<UserRole | "all">("all")

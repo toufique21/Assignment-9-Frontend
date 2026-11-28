@@ -2,7 +2,7 @@
 
 import { useEffect, useSyncExternalStore } from "react"
 
-import { authClient } from "@/lib/auth-client"
+import { useSession } from "@/lib/auth-client"
 import {
     activateWorkspace,
     getServerSnapshot,
@@ -17,7 +17,7 @@ type SessionUser = {
 }
 
 export function useStudentWorkspace() {
-    const session = authClient.useSession()
+    const session = useSession()
     const user = session.data?.user as SessionUser | undefined
     const email = user?.email ?? ""
     const studentName = user?.name ?? "Student"

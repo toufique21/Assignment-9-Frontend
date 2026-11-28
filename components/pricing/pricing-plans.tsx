@@ -6,7 +6,7 @@ import { useState } from "react"
 
 import { Button, ButtonLink, buttonVariants } from "@/components/ui/button"
 import { useToast } from "@/components/ui/toast"
-import { authClient } from "@/lib/auth-client"
+import { useSession } from "@/lib/auth-client"
 import {
     getRequestStatus,
     startPremiumCheckout,
@@ -19,7 +19,7 @@ import { cn } from "@/lib/utils"
 export function PricingPlans() {
     const router = useRouter()
     const { notify } = useToast()
-    const session = authClient.useSession()
+    const session = useSession()
     const user = session.data?.user as
         | { role?: string | null; plan?: string | null }
         | undefined

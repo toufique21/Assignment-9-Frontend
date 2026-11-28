@@ -2,10 +2,10 @@
 
 import { ProfilePanel, type ProfileUser } from "@/components/dashboard/profile-panel"
 import { Skeleton } from "@/components/ui/skeleton"
-import { authClient } from "@/lib/auth-client"
+import { useSession } from "@/lib/auth-client"
 
 export default function ProfilePage() {
-    const session = authClient.useSession()
+    const session = useSession()
     const user = session.data?.user as ProfileUser | undefined
 
     if (session.isPending || !user) {

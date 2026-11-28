@@ -21,7 +21,7 @@ import { Container } from "@/components/ui/container"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useToast } from "@/components/ui/toast"
 import { apiFetch, getErrorMessage } from "@/lib/api-client"
-import { authClient } from "@/lib/auth-client"
+import { useSession } from "@/lib/auth-client"
 import { reloadPublicTuitions } from "@/lib/browse-data"
 import { formatDate, formatMonthlyFee } from "@/lib/format"
 import { getRole } from "@/lib/roles"
@@ -40,7 +40,7 @@ const fieldClass =
 export default function TuitionDetailPage() {
     const params = useParams<{ id: string }>()
     const { workspace, error, isPending, isReady } = usePublicTuitions()
-    const session = authClient.useSession()
+    const session = useSession()
     const user = session.data?.user as
         | { name?: string | null; email?: string | null; role?: string | null }
         | undefined

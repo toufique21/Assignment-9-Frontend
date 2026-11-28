@@ -17,8 +17,7 @@ import { useState } from "react"
 import type { ReactNode } from "react"
 
 import { Button } from "@/components/ui/button"
-import { authClient } from "@/lib/auth-client"
-import { getRole } from "@/lib/roles"
+import type { UserRole } from "@/lib/roles"
 import { cn } from "@/lib/utils"
 
 const tutorLinks = [
@@ -80,14 +79,16 @@ const studentLinks = [
     },
 ]
 
-export function DashboardShell({ children }: { children: ReactNode }) {
+export function DashboardShell({
+    children,
+    role,
+}: {
+    children: ReactNode
+    role: UserRole
+}) {
     const pathname = usePathname()
     const [collapsed, setCollapsed] = useState(false)
     const [mobileOpen, setMobileOpen] = useState(false)
-    const session = authClient.useSession()
-    const role = getRole(
-        (session.data?.user as { role?: string | null } | undefined)?.role
-    )
     const roleLabel = role.charAt(0).toUpperCase() + role.slice(1)
     const links =
         role === "admin"

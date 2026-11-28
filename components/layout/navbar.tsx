@@ -18,7 +18,7 @@ import { ButtonLink } from "@/components/ui/button"
 import { PremiumCrown } from "@/components/ui/premium-crown"
 import { ThemeToggle } from "@/components/ui/theme-toggle"
 import { useToast } from "@/components/ui/toast"
-import { authClient } from "@/lib/auth-client"
+import { authClient, useSession } from "@/lib/auth-client"
 import { publicLinks } from "@/lib/navigation"
 import { getRole } from "@/lib/roles"
 import { cn } from "@/lib/utils"
@@ -31,7 +31,7 @@ type NavUser = {
     plan?: string | null
 }
 
-type SessionState = ReturnType<typeof authClient.useSession>
+type SessionState = ReturnType<typeof useSession>
 
 const roleStyles = {
     student: "bg-[#fc8e2d]/15 text-[#8a4e00] dark:text-[#d98a2b]",
@@ -317,7 +317,7 @@ function NavLinks({
 
 export function Navbar() {
     const pathname = usePathname()
-    const session = authClient.useSession()
+    const session = useSession()
     const [menuOpen, setMenuOpen] = useState(false)
 
     return (

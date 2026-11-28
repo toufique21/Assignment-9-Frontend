@@ -1,6 +1,11 @@
 import { NextResponse } from "next/server"
 
-const SESSION_COOKIE = "better-auth.session_token"
+const SESSION_COOKIE_NAMES = [
+    "better-auth.session_token",
+    "__Secure-better-auth.session_token",
+    "better-auth.session_data",
+    "__Secure-better-auth.session_data",
+]
 
 function isProtectedPath(pathname) {
     if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
@@ -22,9 +27,11 @@ export function proxy(request) {
         return NextResponse.next()
     }
 
-    const sessionToken = request.cookies.get(SESSION_COOKIE)?.value
+    const hasSessionCookie = SESSION_COOKIE_NAMES.some((name) =>
+        Boolean(request.cookies.get(name)?.value)
+    )
 
-    if (!sessionToken) {
+    if (!hasSessionCookie) {
         return NextResponse.redirect(new URL("/sign-in", request.url))
     }
 

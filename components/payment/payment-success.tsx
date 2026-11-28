@@ -7,7 +7,7 @@ import { useEffect, useState } from "react"
 import { ButtonLink } from "@/components/ui/button"
 import { Container } from "@/components/ui/container"
 import { apiFetch, getErrorMessage } from "@/lib/api-client"
-import { authClient } from "@/lib/auth-client"
+import { useSession } from "@/lib/auth-client"
 import { getRole } from "@/lib/roles"
 
 type ConfirmResult =
@@ -33,7 +33,6 @@ async function confirmPayment(
             body: JSON.stringify({ sessionId }),
         })
 
-        await authClient.getSession()
         router.refresh()
 
         return {
@@ -50,7 +49,7 @@ async function confirmPayment(
 export function PaymentSuccess() {
     const router = useRouter()
     const params = useSearchParams()
-    const session = authClient.useSession()
+    const session = useSession()
     const user = session.data?.user as { role?: string | null } | undefined
     const role = getRole(user?.role)
     const sessionId = params.get("session_id") ?? ""
